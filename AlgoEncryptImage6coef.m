@@ -26,7 +26,7 @@ fprintf(fileKey, num2str(X));
 fclose(fileKey);
 
 %put in integer
-img=int8(double(imgRead)-128);
+img = int8(double(imgRead)-128);
 
 for jtemp = 1 : 64
     for itemp = 1 : 64
@@ -81,13 +81,15 @@ for jtemp = 1 : 64
             coefSelectedRoundAbsBinXor(indexSelectedCoef,1:12) = myXor(coefSelectedRoundAbsBin(indexSelectedCoef,1:12), Ybin);
        %put binary in decimal
        %initialisation (without the sign)
-            coefSelectedRoundAbsBinXorAbs(indexSelectedCoef) = bin2dec(coefSelectedRoundAbsBinXor(indexSelectedCoef,2:12));
+            coefSelectedRoundAbsBinXorAbs(indexSelectedCoef) = bin2dec(coefSelectedRoundAbsBinXor(indexSelectedCoef,1:12));
         %put the sign 
-            if coefSelectedRoundAbsBinXor(indexSelectedCoef,1) == '1'
-                coefSelectedRoundAbsBinXorInt(indexSelectedCoef) = coefSelectedRoundAbsBinXorAbs(indexSelectedCoef) * (-1);
-            else
-                coefSelectedRoundAbsBinXorInt(indexSelectedCoef) = coefSelectedRoundAbsBinXorAbs(indexSelectedCoef);
-            end
+%             if coefSelectedRoundAbsBinXor(indexSelectedCoef,1) == '1'
+%                 coefSelectedRoundAbsBinXorInt(indexSelectedCoef) = coefSelectedRoundAbsBinXorAbs(indexSelectedCoef) * (-1);
+%             else
+%                 coefSelectedRoundAbsBinXorInt(indexSelectedCoef) = coefSelectedRoundAbsBinXorAbs(indexSelectedCoef);
+%             end
+            
+            coefSelectedRoundAbsBinXorInt(indexSelectedCoef) = coefSelectedRoundAbsBinXorAbs(indexSelectedCoef);
         end
         
         
@@ -163,15 +165,7 @@ for jtemp = 1 : 64
         dec2bin(coefRecoverRoundAbs(4), 12);
         dec2bin(coefRecoverRoundAbs(5), 12);
         dec2bin(coefRecoverRoundAbs(6), 12)];
-    
-    %put the sign in the 12th bit (it is already 0 for the positive number)
-     for indexSelectedCoef = 1:6
-        if coefRecoverRound(indexSelectedCoef) < 0
-            coefRecoverRoundAbsBin(indexSelectedCoef,1) = '1';
-        end   
-     end
-    %check
-    coefRecoverRoundAbsBin;
+
     
      
     %crypt with  xor (with the function myxor (Han) avec Ybin the 6 coefficients
@@ -191,6 +185,17 @@ for jtemp = 1 : 64
             coefRecoverRoundAbsBinXorInt(indexSelectedCoef) = coefRecoverRoundAbsBinXorAbs(indexSelectedCoef);
         end
     end
+    
+        
+    %put the sign in the 12th bit (it is already 0 for the positive number)
+%      for indexSelectedCoef = 1:6
+%         if coefRecoverRound(indexSelectedCoef) < 0
+%             coefRecoverRoundAbsBin(indexSelectedCoef,1) = '1';
+%         end   
+%      end
+    %check
+    coefRecoverRoundAbsBin;
+    
     
     %put the 6 coefficients (XORed) in the matrice Adct
     tempRecoverDct(1,1) = coefRecoverRoundAbsBinXorInt(1);
